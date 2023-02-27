@@ -26,5 +26,5 @@ export default function SearchBar() {
         Let's go
       </button>
     </div>
-  );
+  )
 }
