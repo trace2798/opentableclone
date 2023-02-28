@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//THis is how you create table for schema in SQl
+model Restaurant {
+  id          Int      @id @default(autoincrement())
+  name        String
+  main_image  String
+  images      String[]
+  description String
+  open_time   String
+  close_time  String
+  slug        String   @unique
+  price       PRICE
+  items       Item[]
+  location_id Int
+  location    Location @relation(fields: [location_id], references: [id])
+  cuisine_id  Int
+  cuisine     Cuisine  @relation(fields: [cuisine_id], references: [id])
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
+model Item {
+  id            Int        @id @default(autoincrement())
+  name          String
+  price         String
+  description   String
+  //This restaurant_id is going to reference the id on restaurant table above. 
+  restaurant_id Int
+  // this statement is defining a foreign key relationship between the "restaurant" table and another table, where the "restaurant_id" field in the "restaurant" table references the primary key "id" in the other table.
+  restaurant    Restaurant @relation(fields: [restaurant_id], references: [id])
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+}
+
+model Location {
+  id         Int          @id @default(autoincrement())
+  name       String
+  Restaurant Restaurant[]
+  created_at DateTime     @default(now())
+  updated_at DateTime     @updatedAt
+}
+
+model Cuisine {
+  id          Int          @id @default(autoincrement())
+  name        String
+  restaurants Restaurant[]
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+}
+
+enum PRICE {
+  CHEAP
+  REGULAR
+  EXPENSIVE
+}
