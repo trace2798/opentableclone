@@ -1,17 +1,19 @@
 import React from "react";
 import Link from "next/link";
 
-const RestaurantCard = () => {
+
+
+
+export default function RestaurantCard() {
   return (
     <div className="border-b flex pb-5">
-      {/* <Link href="/restaurant/milestones-stones"> */}
         <img
           src="https://images.otstatic.com/prod1/49153814/2/medium.jpg"
           alt=""
           className="w-44 rounded"
         />
         <div className="pl-5">
-          <h2 className="text-3xl">Aiāna Restaurant Collective</h2>
+          <h2 className="text-3xl">Restaurant name</h2>
           <div className="flex items-start">
             <div className="flex mb-2">*****</div>
             <p className="ml-2 text-sm">Awesome</p>
@@ -27,9 +29,7 @@ const RestaurantCard = () => {
           <Link href="/restaurant/milestones-stones">View more information</Link>
           </div>
         </div>
-      {/* </Link> */}
     </div>
   );
 };
 
-export default RestaurantCard;

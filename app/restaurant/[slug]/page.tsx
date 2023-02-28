@@ -1,4 +1,3 @@
-import Header from "./components/Header";
 import RestaurantNavBar from "./components/RestaurantNavBar";
 import Title from "./components/Title";
 import Rating from "./components/Rating";
@@ -25,7 +24,7 @@ const fetchRestaurantBySlug = async (slug: string) => {
   });
 
   if (!restaurant) {
-    throw new Error();
+    throw new Error("");
   }
   return restaurant;
 };

@@ -1,6 +1,6 @@
 import React from "react";
 
-const SearchSideBar = () => {
+const  SearchSideBar = () => {
   return (
     <div className="w-1/5">
       <div className="border-b pb-4">

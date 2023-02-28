@@ -19,7 +19,9 @@ export default function SearchBar() {
         className="rounded bg-red-600 px-9 py-2 text-white"
         onClick={() => {
           if (location === "") return;
+          //adding query parameter to the url from search.
           router.push(`/search?city=${location}`);
+          //clears the current search from the search bar once the previous search is executed.
           setLocation("");
         }}
       >
