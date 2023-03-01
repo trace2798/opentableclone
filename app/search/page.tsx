@@ -2,7 +2,7 @@ import React from "react";
 import Header from "./components/Header";
 import SearchSideBar from "./components/SearchSideBar";
 import RestaurantCard from "./components/RestaurantCard";
-import { PrismaClient } from "@prisma/client";
+import { PRICE, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -43,7 +43,7 @@ const fetchCuisines = async () => {
 export default async function Search({
   searchParams,
 }: {
-  searchParams: { city: string };
+  searchParams: { city?: string, cuisine?: string, price?: PRICE};
 }) {
   const restaurants = await fetchRestaurantsByCity(searchParams.city);
   const location = await fetchLocations();
@@ -55,6 +55,7 @@ export default async function Search({
         <SearchSideBar 
         locations={location}
         cuisines={cuisine}
+        searchParams={searchParams}
          />
 
         <div className="w-5/6">
