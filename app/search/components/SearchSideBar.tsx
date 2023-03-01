@@ -10,7 +10,6 @@ export default function SearchSideBar({
   cuisines: Cuisine[];
   searchParams: { city?: string; cuisine?: string; price?: PRICE };
 }) {
-
   // const prices = [
   //   {
   //     price: PRICE.CHEAP,
@@ -76,33 +75,33 @@ export default function SearchSideBar({
                 {label}
               </Link>
             })} */}
-             <Link
-                href={{
-                  pathname: "/search",
-                  query: { ...searchParams, price: PRICE.CHEAP },
-                }}
-                className="border w-full text-reg text-center font-light rounded-l p-2"
-              >
-                $
-              </Link>
-              <Link
-                href={{
-                  pathname: "/search",
-                  query: { ...searchParams, price: PRICE.REGULAR },
-                }}
-                className="border w-full text-reg text-center font-light rounded-l p-2"
-              >
-                $$
-              </Link>
-              <Link
-                href={{
-                  pathname: "/search",
-                  query: { ...searchParams, price: PRICE.EXPENSIVE },
-                }}
-                className="border w-full text-reg text-center font-light rounded-l p-2"
-              >
-                $$$
-              </Link>
+            <Link
+              href={{
+                pathname: "/search",
+                query: { ...searchParams, price: PRICE.CHEAP },
+              }}
+              className="border w-full text-reg text-center font-light rounded-l p-2"
+            >
+              $$
+            </Link>
+            <Link
+              href={{
+                pathname: "/search",
+                query: { ...searchParams, price: PRICE.REGULAR },
+              }}
+              className="border w-full text-reg text-center font-light rounded-l p-2"
+            >
+              $$$
+            </Link>
+            <Link
+              href={{
+                pathname: "/search",
+                query: { ...searchParams, price: PRICE.EXPENSIVE },
+              }}
+              className="border w-full text-reg text-center font-light rounded-l p-2"
+            >
+              $$$
+            </Link>
           </>
         </div>
       </div>
