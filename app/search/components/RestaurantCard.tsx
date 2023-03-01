@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Cuisine, PRICE, Location } from "@prisma/client";
 import Price from "../../components/Price";
+
 interface Restaurant {
   name: string;
   id: number;
