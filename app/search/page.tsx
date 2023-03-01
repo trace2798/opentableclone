@@ -31,7 +31,7 @@ const fetchRestaurantsByCity = (city: string | undefined) => {
   });
 };
 
-//with (props: any) and then console.log({props}) we can see all the props that we get back. With that we get back params and searchParams. Out here we will use searchParams with city
+//with (props: any) and then console.log({props}) we can see all the props that we get back. Out here With that we get back params and searchParams. Out here we will use searchParams with city
 export default async function Search({
   searchParams,
 }: {
@@ -45,7 +45,11 @@ export default async function Search({
         <SearchSideBar />
         <div className="w-5/6">
           {restaurants.length ? (
-            <RestaurantCard />
+            <>
+              {restaurants.map((restaurant) => (
+                <RestaurantCard restaurant={restaurant} />
+              ))}
+            </>
           ) : (
             <p>Sorry, we found no restaurant for that area.</p>
           )}
