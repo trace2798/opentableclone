@@ -6,6 +6,7 @@ import Images from "./components/Images";
 import Reviews from "./components/Reviews";
 import ReservationCard from "./components/ReservationCard";
 import { PrismaClient } from "@prisma/client";
+import { notFound } from "next/navigation";
 
 const prisma = new PrismaClient();
 
@@ -25,7 +26,8 @@ const fetchRestaurantBySlug = async (slug: string) => {
   });
 
   if (!restaurant) {
-    throw new Error("Cannot find restaurant");
+    //we can use notFound to tell nextJs that it is a not found error and it will render the not-found.tsx file instead of error.tsx
+    notFound();
   }
   return restaurant;
 };
