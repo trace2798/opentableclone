@@ -20,6 +20,7 @@ const fetchRestaurantBySlug = async (slug: string) => {
       images: true,
       description: true,
       slug: true,
+      reviews: true,
     },
   });
 
@@ -43,7 +44,7 @@ export default async function RestaurantDetails({
         <Rating />
         <Description description={restaurant.description} />
         <Images images={restaurant.images}/>
-        <Reviews />
+        <Reviews reviews={restaurant.reviews} />
       </div>
       <div className="w-[27%] relative text-reg">
         <ReservationCard />
