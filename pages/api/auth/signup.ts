@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import validator from "validator";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
+import * as jose from "jose";
 
 const prisma = new PrismaClient();
 
@@ -67,8 +69,32 @@ export default async function handler(
         .json({ errorMessage: "Email is associated with another account" });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    //using prisma to create a new user.
+    const user = await prisma.user.create({
+      data: {
+        first_name: firstName,
+        last_name: lastName,
+        password: hashedPassword,
+        city,
+        phone,
+        email,
+      },
+    });
+
+    const alg = "HS256";
+
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
+    const token = await new jose.SignJWT({ email: user.email })
+      .setProtectedHeader({ alg })
+      .setExpirationTime("24h")
+      .sign(secret);
+
     res.status(200).json({
-      hello: body,
+      hello: user,
     });
   }
+  return res.status(404).json("Unknown endpoint");
 }
