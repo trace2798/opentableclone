@@ -10,30 +10,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const bearerToken = req.headers["authorization"] as string;
-
-  if (!bearerToken) {
-    return res.status(401).json({
-      errorMessage: "Unauthorized Request(no bearer token)",
-    });
-  }
-
   const token = bearerToken.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({
-      errorMessage: "Unauthorized Request(no token)",
-    });
-  }
-
-  const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-
-  try {
-    await jose.jwtVerify(token, secret);
-  } catch (error) {
-    return res.status(401).json({
-      errorMessage: "Unauthorized Request(token invalid)",
-    });
-  }
 
   const payload = jwt.decode(token) as { email: string };
 
@@ -48,12 +25,12 @@ export default async function handler(
       email: payload.email,
     },
     select: {
-        id: true,
-        first_name: true,
-        last_name: true,
-        email: true,
-        city: true,
-    }
+      id: true,
+      first_name: true,
+      last_name: true,
+      email: true,
+      city: true,
+    },
   });
 
   return res.json({ me: user });
