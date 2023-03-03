@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCookie } from "cookies-next";
 import { useContext } from "react";
 import { AuthenticationContext } from "../app/context/AuthContext";
 
@@ -86,6 +87,8 @@ const useAuth = () => {
       });
     }
   };
+
+  
 
   return {
     signin,

@@ -30,10 +30,23 @@ export default async function handler(
       last_name: true,
       email: true,
       city: true,
+      phone: true,
     },
   });
 
-  return res.json({ me: user });
+  if (!user) {
+    return res.status(401).json({
+      errorMessage: "User not found",
+    });
+  }
+
+  return res.json({
+    id: user.id,
+    firstName: user.first_name,
+    lastName: user.last_name,
+    phone: user.phone,
+    city: user.city,
+  });
 }
 
 //we use jwt to decode the token. BUt at times it causes problem with server side rendered application.
