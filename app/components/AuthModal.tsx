@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -31,7 +31,7 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
       ...inputs,
       [e.target.name]: e.target.value,
     });
-  }; 
+  };
 
   const [inputs, setInputs] = useState({
     firstName: "",
@@ -39,8 +39,32 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
     email: "",
     phone: "",
     city: "",
-    password: ""
+    password: "",
   });
+
+  //initially it is going to be disabled by default
+  const [disabled, setDisabled] = useState(true);
+  //we will use useEffect to display the create account/ login button if any input field is empty
+  useEffect(() => {
+    if (isSignin) {
+      if (inputs.password && inputs.email) {
+        return setDisabled(false);
+      }
+    } else {
+      if (
+        inputs.firstName &&
+        inputs.lastName &&
+        inputs.email &&
+        inputs.city &&
+        inputs.phone &&
+        inputs.password
+      ) {
+        return setDisabled(false);
+      }
+    }
+
+    setDisabled(true);
+  }, [inputs]);
 
   return (
     <div>
@@ -73,9 +97,14 @@ export default function AuthModal({ isSignin }: { isSignin: boolean }) {
                   "Create your OpenTabel account"
                 )}
               </h2>
-              <AuthModalInputs inputs={inputs} handleChangeInput={handleChangeInput} isSignin={isSignin}/>
+              <AuthModalInputs
+                inputs={inputs}
+                handleChangeInput={handleChangeInput}
+                isSignin={isSignin}
+              />
               <button
-                className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400" 
+                className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400"
+                disabled={disabled}
               >
                 {renderContent("Sign In", "Create Account")}
               </button>
