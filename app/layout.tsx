@@ -1,4 +1,5 @@
 import NavBar from "./components/NavBar";
+import AuthContext from "./context/AuthContext";
 import "./globals.css";
 
 export default function RootLayout({
@@ -15,10 +16,13 @@ export default function RootLayout({
       <head />
       <body>
         <main className="bg-gray-100 min-h-screen w-screen">
+          {/* By wrapping it with <AuthContext>, every single component within our application has access to authState and setAuthState.   */}
+          <AuthContext>
           <main className="max-w-screen-2xl m-auto bg-white">
             <NavBar />
             {children}
           </main>
+          </AuthContext>
         </main>
       </body>
     </html>
