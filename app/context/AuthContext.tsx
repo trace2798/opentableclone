@@ -38,9 +38,9 @@ export default function AuthContext({
   children: React.ReactNode;
 }) {
   const [authState, setAuthState] = useState<State>({
-    loading: false,
+    loading: true,
     data: null,
-    error: null,
+    error: null, 
   });
 
   const fetchUser = async () => {
