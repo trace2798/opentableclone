@@ -12,7 +12,7 @@ const useAuth = () => {
   }: {
     email: string;
     password: string;
-  }) => {
+  }, handleClose: () => void) => {
     setAuthState({ data: null, error: null, loading: true });
     try {
       const response = await axios.post(
@@ -27,6 +27,7 @@ const useAuth = () => {
         error: null,
         loading: false,
       });
+      handleClose();
     } catch (error: any) {
       setAuthState({
         data: null,
