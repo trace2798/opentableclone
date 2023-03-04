@@ -6,7 +6,7 @@ import { useState } from "react";
 export default function useAvailabilities() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<{time: string; available: boolean}[] | null>(null);
   // function to make the axios request.
   //The "fetchAvailabilities" function is asynchronous function that takes an object containing four parameters: 
   //"slug", "partySize", "day", and "time". These parameters are used to construct the API URL and request parameters for fetching availability data from the restaurant API.
