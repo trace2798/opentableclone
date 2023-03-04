@@ -67,6 +67,8 @@ export default async function handler(
     },
     select: {
       tables: true,
+      open_time: true,
+      close_time: true,
     },
   });
   if (!restaurant) {
@@ -77,7 +79,59 @@ export default async function handler(
 
   const tables = restaurant.tables;
 
-  return res.json({ searchTimes, bookings, bookingTablesObj, tables });
+  // step5:Reformatting the searchTimes to include date, time and tables.
+  const searchTimesWithTables = searchTimes.map((searchTime) => {
+    return {
+      date: new Date(`${day}T${searchTime}`),
+      time: searchTime,
+      tables,
+    };
+  });
+
+  //Step 6:Filtering out tables if they are already booked.
+  searchTimesWithTables.forEach((t) => {
+    t.tables = t.tables.filter((table) => {
+      if (bookingTablesObj[t.date.toISOString()]) {
+        if (bookingTablesObj[t.date.toISOString()][table.id]) return false;
+      }
+      return true;
+    });
+  });
+  // step7: Determining if a time slot is available based on the tables and party size.
+  const availabilities = searchTimesWithTables
+    .map((t) => {
+      const sumSeats = t.tables.reduce((sum, table) => {
+        return sum + table.seats;
+      }, 0);
+
+      return {
+        time: t.time,
+        available: sumSeats >= parseInt(partySize),
+      };
+    }) //Step 8: Filter out that are outside of opening window.
+    .filter((availability) => {
+      const timeIsAfterOpeningHour =
+        new Date(`${day}T${availability.time}`) >=
+        new Date(`${day}T${restaurant.open_time}`);
+      const timeIsBeforeClosingHour =
+        new Date(`${day}T${availability.time}`) <=
+        new Date(`${day}T${restaurant.close_time}`);
+
+      return timeIsAfterOpeningHour && timeIsBeforeClosingHour;
+    });
+
+  
+
+  // return res.json({
+  //   searchTimes,
+  //   bookings,
+  //   bookingTablesObj,
+  //   tables,
+  //   searchTimesWithTables,
+  // });
+  return res.json({
+    availabilities,
+  });
 }
 
 // http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/availability?day=2023-05-27&time=15:00:00.000Z&partySize=8
