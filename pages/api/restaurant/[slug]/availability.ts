@@ -48,7 +48,37 @@ export default async function handler(
     },
   });
 
-  return res.json({ searchTimes, bookings });
+  // step3:
+  const bookingTablesObj: { [key: string]: { [key: number]: true } } = {};
+
+  bookings.forEach((booking) => {
+    bookingTablesObj[booking.booking_time.toISOString()] =
+      booking.tables.reduce((obj, table) => {
+        return {
+          ...obj,
+          [table.table_id]: true,
+        };
+      }, {});
+  });
+  //Step4: Fetch all tables at restaurant we are quering for
+  const restaurant = await prisma.restaurant.findUnique({
+    where: {
+      slug,
+    },
+    select: {
+      tables: true,
+    },
+  });
+  if (!restaurant) {
+    return res.status(400).json({
+      errorMessage: "Invalid data provided",
+    });
+  }
+
+  const tables = restaurant.tables;
+
+  return res.json({ searchTimes, bookings, bookingTablesObj, tables });
 }
 
+// http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/availability?day=2023-05-27&time=15:00:00.000Z&partySize=8
 // http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/availability?day=2023-05-27&time=15:00:00.000Z&partySize=8
